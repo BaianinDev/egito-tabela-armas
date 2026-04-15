@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egito · Tabela de Armas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#0a0a0f;color:#fff;line-height:1.5;}
+    .container{max-width:1280px;margin:0 auto;padding:3rem 2rem;}
+    .header{margin-bottom:3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+    .logo{display:flex;align-items:baseline;gap:.5rem;}
+    .logo-egito{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:700;letter-spacing:-0.02em;background:linear-gradient(135deg,#fff 0%,#a0a0b0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .logo-sub{font-size:.85rem;font-weight:500;color:#5a5a70;text-transform:uppercase;letter-spacing:2px;margin-left:.5rem;}
+    .status-tag{display:flex;align-items:center;gap:.75rem;background:#15151e;padding:.5rem 1.25rem;border-radius:100px;border:1px solid #252530;}
+    .status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite;}
+    .status-dot.parceria{background:#10b981;box-shadow:0 0 10px #10b98166;}
+    .status-dot.normal{background:#ef4444;box-shadow:0 0 10px #ef444466;}
+    .status-text{font-size:.9rem;font-weight:500;color:#c0c0d0;}
+    .controls{display:flex;gap:.5rem;background:#111118;padding:.35rem;border-radius:100px;border:1px solid #20202a;}
+    .btn{padding:.6rem 1.5rem;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;background:transparent;color:#808090;}
+    .btn:hover{color:#fff;background:#1a1a25;}
+    .btn.active{background:#fff;color:#0a0a0f;}
+    .btn-clear{padding:.6rem 1.2rem;color:#606070;}
+    .btn-clear:hover{color:#ef4444;background:#1a1520;}
+    .section-title{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
+    .section-title h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:600;color:#e0e0f0;letter-spacing:-0.01em;}
+    .badge{background:#1c1c28;padding:.25rem .9rem;border-radius:100px;font-size:.75rem;font-weight:600;color:#9090a8;border:1px solid #2a2a3a;}
+    .weapons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:.75rem;margin-bottom:3rem;}
+    .weapon-card{background:#111118;border:1px solid #20202a;border-radius:16px;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;transition:all .2s;}
+    .weapon-card:hover{background:#15151f;border-color:#303040;}
+    .weapon-card.selected{background:#1a1a28;border-color:#ffffff20;box-shadow:0 4px 20px rgba(0,0,0,.3);}
+    .weapon-info h3{font-size:1.1rem;font-weight:600;color:#f0f0ff;margin-bottom:.35rem;letter-spacing:-0.01em;}
+    .weapon-prices{font-size:.75rem;color:#707088;font-weight:500;display:flex;flex-direction:column;gap:2px;}
+    .weapon-prices .min-price{color:#10b981;}
+    .weapon-prices .max-price{color:#ef4444;font-weight:600;}
+    .weapon-prices span{font-weight:700;}
+    .min-price span{color:#10b981;}
+    .max-price span{color:#ef4444;}
+    .weapon-input-area{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;}
+    .qty-field{display:flex;align-items:center;background:#1e1e2a;border-radius:8px;border:1px solid #2a2a3a;overflow:hidden;}
+    .qty-field input{width:70px;padding:.5rem .5rem;background:transparent;border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;text-align:center;}
+    .qty-field input:focus{outline:none;background:#252535;}
+    .qty-field input::-webkit-outer-spin-button,.qty-field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+    .weapon-subtotal{font-size:.9rem;font-weight:700;min-height:1.4rem;}
+    .weapon-subtotal.parceria-price{color:#10b981;}
+    .weapon-subtotal.normal-price{color:#ef4444;}
+    .summary-section{margin:2.5rem 0;}
+    .summary-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+    .stat-card{background:#111118;border:1px solid #20202a;border-radius:20px;padding:1.75rem 1.5rem;text-align:center;transition:transform .2s;}
+    .stat-card:hover{transform:translateY(-4px);border-color:#303040;}
+    .stat-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#606078;margin-bottom:.75rem;}
+    .stat-value{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:700;color:#fff;letter-spacing:-0.02em;}
+    .stat-value.accent{background:linear-gradient(135deg,#d4b07a 0%,#e8cfa6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .stat-note{font-size:.7rem;color:#505068;margin-top:.5rem;font-weight:500;}
+    .footer{margin-top:3rem;padding-top:2rem;border-top:1px solid #20202a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .dev-credit{display:flex;align-items:center;gap:.75rem;color:#606078;font-size:.8rem;font-weight:500;}
+    .dev-credit strong{color:#a0a0b8;font-weight:700;}
+    .copyright{color:#404058;font-size:.75rem;font-weight:500;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+    @media(max-width:640px){.container{padding:1.5rem 1rem;}.header{flex-direction:column;align-items:flex-start;}.summary-cards{grid-template-columns:1fr;}.weapon-card{flex-direction:column;align-items:flex-start;gap:1rem;}.weapon-input-area{width:100%;flex-direction:row;justify-content:space-between;}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo"><span class="logo-egito">EGITO</span><span class="logo-sub">area 6</span></div>
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <div class="status-tag"><div id="statusDot" class="status-dot parceria"></div><span id="statusText" class="status-text">Com parceria</span></div>
+      <div class="controls"><button class="btn active" id="btnP" onclick="setModo('parceria')">Parceria</button><button class="btn" id="btnN" onclick="setModo('normal')">Normal</button><button class="btn btn-clear" onclick="limpar()">Limpar</button></div>
+    </div>
+  </div>
+  <div class="section-title"><h2>Catálogo</h2><span class="badge" id="cnt">14 itens</span></div>
+  <div class="weapons-grid" id="produtos"></div>
+  <div class="section-title"><h2>Resumo</h2></div>
+  <div class="summary-cards">
+    <div class="stat-card"><div class="stat-label">Total Bruto</div><div class="stat-value" id="total">R$ 0</div></div>
+    <div class="stat-card"><div class="stat-label">Vendedor</div><div class="stat-value accent" id="vendV">R$ 0</div><div class="stat-note">30% · comissão</div></div>
+    <div class="stat-card"><div class="stat-label">Empresa</div><div class="stat-value" id="empV" style="color:#a0a0ff;">R$ 0</div><div class="stat-note">70% · caixa</div></div>
+  </div>
+  <div class="footer"><div class="dev-credit"><span>desenvolvido por <strong>BaianinDev</strong></span></div><div class="copyright">© Tabela de Armas</div></div>
+</div>
+<script>
+  let modo='parceria';
+  const P=[{nome:'Five-Seven & Glock',min:116910,max:129900},{nome:'Tec-9',min:180765,max:200850},{nome:'Micro Uzi 7',min:93285,max:103650},{nome:'AK-47',min:258120,max:286800},{nome:'Uzi',min:190890,max:212100},{nome:'MP5',min:175770,max:195300},{nome:'M60',min:175770,max:195300},{nome:'MTAR-21',min:218160,max:242400},{nome:'G3-MK2',min:322650,max:358500},{nome:'Remington',min:190890,max:212100},{nome:'AKS',min:194400,max:216000},{nome:'M4A1',min:194400,max:216000},{nome:'MPK',min:288900,max:321000},{nome:'Parafal',min:322650,max:358500}];
+  function fmt(v){return 'R$ '+v.toLocaleString('pt-BR');}
+  function render(){let container=document.getElementById('produtos');container.innerHTML='';P.forEach((p,i)=>{let card=document.createElement('div');card.className='weapon-card';card.id=`card${i}`;card.innerHTML=`<div class="weapon-info"><h3>${p.nome}</h3><div class="weapon-prices"><div class="min-price">Com parceria: <span>${fmt(p.min)}</span></div><div class="max-price">Normal: <span>${fmt(p.max)}</span></div></div></div><div class="weapon-input-area"><div class="qty-field"><input type="number" min="0" value="" id="q${i}" oninput="window.calcular()" onfocus="this.value=''" placeholder="0"></div><div class="weapon-subtotal ${modo==='parceria'?'parceria-price':'normal-price'}" id="s${i}"></div></div>`;container.appendChild(card);});calcular();}
+  window.calcular=function(){let total=0,selecionados=0;P.forEach((p,i)=>{let qInput=document.getElementById('q'+i);let q=parseInt(qInput?.value)||0;if(qInput.value==='')q=0;let preco=modo==='parceria'?p.min:p.max;let subtotal=q*preco;total+=subtotal;if(q>0)selecionados++;let subEl=document.getElementById('s'+i);let card=document.getElementById('card'+i);if(subEl){subEl.textContent=q>0?fmt(subtotal):'';subEl.className=`weapon-subtotal ${modo==='parceria'?'parceria-price':'normal-price'}`;}if(card)card.classList.toggle('selected',q>0);});document.getElementById('total').textContent=fmt(total);document.getElementById('vendV').textContent=fmt(Math.round(total*.3));document.getElementById('empV').textContent=fmt(Math.round(total*.7));let cntEl=document.getElementById('cnt');if(cntEl)cntEl.textContent=selecionados>0?`${selecionados} selecionado${selecionados>1?'s':''}`:'14 itens';};
+  window.setModo=function(n){modo=n;let statusDot=document.getElementById('statusDot');let statusText=document.getElementById('statusText');let btnP=document.getElementById('btnP');let btnN=document.getElementById('btnN');if(modo==='parceria'){statusDot.className='status-dot parceria';statusText.textContent='Com parceria';btnP.classList.add('active');btnN.classList.remove('active');btnP.style.background='#ffffff';btnP.style.color='#0a0a0f';btnN.style.background='transparent';btnN.style.color='#808090';}else{statusDot.className='status-dot normal';statusText.textContent='Normal';btnN.classList.add('active');btnP.classList.remove('active');btnN.style.background='#ffffff';btnN.style.color='#0a0a0f';btnP.style.background='transparent';btnP.style.color='#808090';}render();};
+  window.limpar=function(){P.forEach((_,i)=>{let inp=document.getElementById('q'+i);if(inp)inp.value='';});calcular();};
+  render();document.getElementById('btnP').style.background='#ffffff';document.getElementById('btnP').style.color='#0a0a0f';
+</script>
+</body>
+</html>

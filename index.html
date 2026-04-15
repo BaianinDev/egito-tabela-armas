@@ -67,13 +67,13 @@
 <body>
 <div class="container">
   <div class="header">
-    <div class="logo"><span class="logo-egito">EGITO</span><span class="logo-sub">area 6</span></div>
+    <div class="logo"><span class="logo-egito">EGITO</span><span class="logo-sub">armas</span></div>
     <div style="display:flex;align-items:center;gap:1.5rem;">
       <div class="status-tag"><div id="statusDot" class="status-dot parceria"></div><span id="statusText" class="status-text">Com parceria</span></div>
       <div class="controls"><button class="btn active" id="btnP" onclick="setModo('parceria')">Parceria</button><button class="btn" id="btnN" onclick="setModo('normal')">Normal</button><button class="btn btn-clear" onclick="limpar()">Limpar</button></div>
     </div>
   </div>
-  <div class="section-title"><h2>Catálogo</h2><span class="badge" id="cnt">14 itens</span></div>
+  <div class="section-title"><h2>Catálogo</h2><span class="badge" id="cnt">6 itens</span></div>
   <div class="weapons-grid" id="produtos"></div>
   <div class="section-title"><h2>Resumo</h2></div>
   <div class="summary-cards">
@@ -85,10 +85,18 @@
 </div>
 <script>
   let modo='parceria';
-  const P=[{nome:'Five-Seven & Glock',min:116910,max:129900},{nome:'Tec-9',min:180765,max:200850},{nome:'Micro Uzi 7',min:93285,max:103650},{nome:'AK-47',min:258120,max:286800},{nome:'Uzi',min:190890,max:212100},{nome:'MP5',min:175770,max:195300},{nome:'M60',min:175770,max:195300},{nome:'MTAR-21',min:218160,max:242400},{nome:'G3-MK2',min:322650,max:358500},{nome:'Remington',min:190890,max:212100},{nome:'AKS',min:194400,max:216000},{nome:'M4A1',min:194400,max:216000},{nome:'MPK',min:288900,max:321000},{nome:'Parafal',min:322650,max:358500}];
+  const P=[
+    {nome:'Five',min:116910,max:129900},
+    {nome:'Micro Uzi',min:93285,max:103650},
+    {nome:'AK',min:258120,max:286800},
+    {nome:'Remington',min:190890,max:212100},
+    {nome:'G3',min:322650,max:358500},
+    {nome:'MTAR',min:218160,max:242400},
+    {nome:'LSD',min:600,max:700}
+  ];
   function fmt(v){return 'R$ '+v.toLocaleString('pt-BR');}
   function render(){let container=document.getElementById('produtos');container.innerHTML='';P.forEach((p,i)=>{let card=document.createElement('div');card.className='weapon-card';card.id=`card${i}`;card.innerHTML=`<div class="weapon-info"><h3>${p.nome}</h3><div class="weapon-prices"><div class="min-price">Com parceria: <span>${fmt(p.min)}</span></div><div class="max-price">Normal: <span>${fmt(p.max)}</span></div></div></div><div class="weapon-input-area"><div class="qty-field"><input type="number" min="0" value="" id="q${i}" oninput="window.calcular()" onfocus="this.value=''" placeholder="0"></div><div class="weapon-subtotal ${modo==='parceria'?'parceria-price':'normal-price'}" id="s${i}"></div></div>`;container.appendChild(card);});calcular();}
-  window.calcular=function(){let total=0,selecionados=0;P.forEach((p,i)=>{let qInput=document.getElementById('q'+i);let q=parseInt(qInput?.value)||0;if(qInput.value==='')q=0;let preco=modo==='parceria'?p.min:p.max;let subtotal=q*preco;total+=subtotal;if(q>0)selecionados++;let subEl=document.getElementById('s'+i);let card=document.getElementById('card'+i);if(subEl){subEl.textContent=q>0?fmt(subtotal):'';subEl.className=`weapon-subtotal ${modo==='parceria'?'parceria-price':'normal-price'}`;}if(card)card.classList.toggle('selected',q>0);});document.getElementById('total').textContent=fmt(total);document.getElementById('vendV').textContent=fmt(Math.round(total*.3));document.getElementById('empV').textContent=fmt(Math.round(total*.7));let cntEl=document.getElementById('cnt');if(cntEl)cntEl.textContent=selecionados>0?`${selecionados} selecionado${selecionados>1?'s':''}`:'14 itens';};
+  window.calcular=function(){let total=0,selecionados=0;P.forEach((p,i)=>{let qInput=document.getElementById('q'+i);let q=parseInt(qInput?.value)||0;if(qInput.value==='')q=0;let preco=modo==='parceria'?p.min:p.max;let subtotal=q*preco;total+=subtotal;if(q>0)selecionados++;let subEl=document.getElementById('s'+i);let card=document.getElementById('card'+i);if(subEl){subEl.textContent=q>0?fmt(subtotal):'';subEl.className=`weapon-subtotal ${modo==='parceria'?'parceria-price':'normal-price'}`;}if(card)card.classList.toggle('selected',q>0);});document.getElementById('total').textContent=fmt(total);document.getElementById('vendV').textContent=fmt(Math.round(total*.3));document.getElementById('empV').textContent=fmt(Math.round(total*.7));let cntEl=document.getElementById('cnt');if(cntEl)cntEl.textContent=selecionados>0?`${selecionados} selecionado${selecionados>1?'s':''}`:'6 itens';};
   window.setModo=function(n){modo=n;let statusDot=document.getElementById('statusDot');let statusText=document.getElementById('statusText');let btnP=document.getElementById('btnP');let btnN=document.getElementById('btnN');if(modo==='parceria'){statusDot.className='status-dot parceria';statusText.textContent='Com parceria';btnP.classList.add('active');btnN.classList.remove('active');btnP.style.background='#ffffff';btnP.style.color='#0a0a0f';btnN.style.background='transparent';btnN.style.color='#808090';}else{statusDot.className='status-dot normal';statusText.textContent='Normal';btnN.classList.add('active');btnP.classList.remove('active');btnN.style.background='#ffffff';btnN.style.color='#0a0a0f';btnP.style.background='transparent';btnP.style.color='#808090';}render();};
   window.limpar=function(){P.forEach((_,i)=>{let inp=document.getElementById('q'+i);if(inp)inp.value='';});calcular();};
   render();document.getElementById('btnP').style.background='#ffffff';document.getElementById('btnP').style.color='#0a0a0f';
